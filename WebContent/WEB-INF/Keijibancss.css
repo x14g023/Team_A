@@ -1,0 +1,44 @@
+
+body{
+    background-color:lemonchiffon;
+
+}
+
+header{
+	background-color:ghostwhite;
+	text-align: center;
+}
+
+.genre{
+	float:left;
+    text-align:center;
+	background-color:moccasin;
+	width:125px;
+}
+
+.genre ul{
+	list-style:none;
+	margin-left:-50px;
+
+}
+
+#naiyo{
+	position:absolute;
+	top:146px; left:243px
+}
+
+#naiyo label{
+	position:absolute;
+	top:0px; left:-43px
+}
+
+
+#namae{
+	float:left;
+	position:absolute;
+	top:122px; left:200px
+}
+
+form{
+
+}
