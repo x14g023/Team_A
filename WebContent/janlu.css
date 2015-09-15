@@ -1,0 +1,22 @@
+body		{
+			 background-color:lemonchiffon;
+			}
+
+table		{
+			 width:400px; border-collapse:collapse;
+			}
+
+tr,th,td	{
+	  		 border:solid 1px #000;
+	  		}
+
+#my_massage	{
+			 padding:100px;
+		 	 width:400px;
+		 	 height:120px;
+	    	 text-align: left;
+	   		}
+
+.switch		{
+			 margin-left: 150px;
+			}
