@@ -2,6 +2,8 @@
 body{
     background-color:lemonchiffon;
 
+    margin: 0 auto;
+
 }
 
 header{
@@ -14,6 +16,7 @@ header{
     text-align:center;
 	background-color:moccasin;
 	width:125px;
+
 }
 
 .genre ul{
@@ -23,23 +26,21 @@ header{
 }
 
 #naiyo{
-	position:absolute;
 	top:146px; left:243px
 }
 
 #naiyo label{
-	position:absolute;
 	top:0px; left:-43px
 }
 
 
 #namae{
 	float:left;
-	position:absolute;
 	top:122px; left:200px
 }
-
+.msg{
+	overflow: auto;
+}
 .massage{
-	position:relative; top:225px; left:50px;
 
 }

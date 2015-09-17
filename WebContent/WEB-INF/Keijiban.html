@@ -10,36 +10,36 @@
 		<!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
 	</head>
 	<body>
-		<header>
-			<h1>$(TITLE)</h1>
-			<h3>ジャンル名</h3>
-		</header>
+	<header>
+		<h1>$(TITLE)</h1>
+		<h3>ジャンル名</h3>
+	</header>
 
-		<div class="genre">
-			<ul>
-				<li>ジャンル</li>
-				<li>ジャンル</li>
-				<li>ジャンル</li>
-			</ul>
-	<form>
-		<input type="submit" value="追加">
-		<input type="submit" value="削除">
-	</form>
-</div>
-
-	<div class="in">
-	<form action="Main" method="post">
-		<span id="namae">
-		<label for="name">名前:</label>
-		<input type="text" name="name" size="20" maxlength="20"></span><br>
-		<span id="naiyo">
-		<label for="write">内容:</label>
-		<textarea name="write" rows="10" cols="60"placeholder="あなたの意見を自由に書き込んでください"></textarea>
-		<input type="submit" value="送信"></span>
-	</form>
-	<div class ="massage">
-	$(MSG)
+	<div class="genre">
+		<span>ジャンル</span><br>
+		<span>ジャンル</span><br>
+		<span>ジャンル</span><br>
+		<form>
+			<input type="submit" value="追加">
+			<input type="submit" value="削除">
+		</form>
 	</div>
+
+	<div class="msg">
+
+		<form action="Main" method="post">
+			<span id="namae">
+			<label for="name">名前:</label>
+			<input type="text" name="name" size="20" maxlength="20"></span><br>
+			<span id="naiyo">
+			<label for="write">内容:</label>
+			<textarea name="write" rows="10" cols="60"placeholder="あなたの意見を自由に書き込んでください"></textarea>
+			<input type="submit" value="送信"></span>
+		</form>
+		<div class ="massage">
+		$(MSG)
+		</div>
+
 	</div>
 
 	<body>
