@@ -9,35 +9,39 @@
 		<link rel="stylesheet" href="Keijibancss.css">
 		<!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
 	</head>
-<body>
-<header>
-<h1>$(TITLE)</h1>
-<h3>ジャンル名</h3>
-</header>
+	<body>
+		<header>
+			<h1>$(TITLE)</h1>
+			<h3>ジャンル名</h3>
+		</header>
+		$(PAGE)
+		<div class="genre">
+			<ul>
+				<li>ジャンル</li>
+				<li>ジャンル</li>
+				<li>ジャンル</li>
+			</ul>
+	<form>
+		<input type="button" onclick="location.href='?k=1'" value="追加">
+        <input type="button" onclick="location.href='?k=2'" value="削除">
+	</form>
 
-<div class="genre">
-<ul>
-<li>ジャンル</li>
-<li>ジャンル</li>
-<li>ジャンル</li>
-</ul>
-<form>
-<input type="button" onclick="location.href='?cmd=add'" value="追加">
-<input type="button" onclick="location.href='?cmd=del'" value="削除">
-</form>
 </div>
 
-<div class="in">
-<form>
-	<span id="namae">
-	<label for="name">名前:</label>
-	<input type="text" name="name" size="20" maxlength="20"></span><br>
-	<span id="naiyo">
-	<label for="write">内容:</label>
-	<textarea name="write" rows="10" cols="60"placeholder="あなたの意見を自由に書き込んでください"></textarea>
+	<div class="in">
+	<form action="Main" method="post">
+		<span id="namae">
+		<label for="name">名前:</label>
+		<input type="text" name="name" size="20" maxlength="20"></span><br>
+		<span id="naiyo">
+		<label for="write">内容:</label>
+		<textarea name="write" rows="10" cols="60"placeholder="あなたの意見を自由に書き込んでください"></textarea>
 		<input type="submit" value="送信"></span>
-</form>
-</div>
+	</form>
+	<div class ="massage">
+	$(MSG)
+	</div>
+	</div>
 
-<body>
+	<body>
 </html>

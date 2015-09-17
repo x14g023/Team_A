@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Scanner;
 
 import javax.servlet.ServletContext;
@@ -18,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Test01
  */
-@WebServlet("/Test01")
+@WebServlet("/Main")
 public class Main extends HttpServlet {
-	private static final String TITLE = "テストタイトル";
+	private static final String TITLE = "たいとるかわる";
 	private static final long serialVersionUID = 1L;
     private Oracle mOracle;
 
@@ -60,8 +61,20 @@ public class Main extends HttpServlet {
 			mOracle.connect("ux4", id, pass);
 
 			//テーブルが無ければ作成
-			if(!mOracle.isTable("exam01"))
-				mOracle.execute("create table exam01(msg varchar(200))");
+			if(!mOracle.isTable("Table_Content")&&mOracle.isTable("Table_Genre")){
+
+				mOracle.execute("create table Table_Content("
+						+ "name varchar2(100),"
+						+ "write varchar2(1000),"
+						+ "time date,"
+						+ "genreID Number);"
+						+ "create table Table_Genre(Genre_name varchar2(100));"
+						+ "create sequence Table_Content_SeqID;"
+						+ "create sequence Table_Genre_SeqID;"
+						);
+				}
+
+
 			} catch (Exception e) {
 			System.err.println("db.txtにユーザ情報が設定されていない、もしくは認証に失敗しました");
 		}
@@ -101,13 +114,16 @@ public class Main extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         //パラメータにデータがあった場合はDBへ挿入
-        String param1 = request.getParameter("data1");
-        if (param1 != null && param1.length() > 0)
+        String param1 = request.getParameter("name");
+        String param2 = request.getParameter("write");
+        if (param1 != null && param1.length() > 0 || param2 != null && param2.length() > 0 )
         {
         	//UTF8をJava文字列に変換
-        	String data1 = new String(param1.getBytes("ISO-8859-1"),"UTF-8");
+        	String dataw = new String(param1.getBytes("ISO-8859-1"),"UTF-8");
+        	String datan = new String(param2.getBytes("ISO-8859-1"),"UTF-8");
         	//SQL文の作成 Oracle.STRはシングルクオートのエスケープ処理
-        	String sql = String.format("insert into exam01 values('%s')",Oracle.STR(data1));
+        	String sql = String.format(
+        			"insert into Table_Content values(Table_Content_SeqID.nextval,'%s','%s',SYSDATE,1)",Oracle.STR(datan),Oracle.STR(dataw));
         	//デバッグ用
         	System.out.println("DEBUG:SQL文 "+sql);
         	//DBにSQL文を実行させる
@@ -116,23 +132,62 @@ public class Main extends HttpServlet {
         //テンプレートファイルを読む
         TemplateString ts = new TemplateString();
         ts.open(this, "Keijiban.html");
+
         //タイトルの置換
         ts.replace("$(TITLE)", TITLE);
 
+        //各ページの読み込み
+        TemplateString p1 = new TemplateString();
+        p1.open(this, "genreInsert.html");
+        TemplateString p2 = new TemplateString();
+        p2.open(this, "genreDelete.html");
+        TemplateString p3 = new TemplateString();
+        p3.open(this, "commentDelete.html");
+
+        //パラメータによって内容を切り替え
+        param1 = request.getParameter("k");
+        if (param1 != null && param1.length() > 0)
+        {
+        	int index =  Integer.parseInt(param1);
+        	if(index == 1)
+        		ts.replace("$(PAGE)", p1.getText());
+        	else if(index == 2)
+        		ts.replace("$(PAGE)", p2.getText());
+        	else if(index == 3)
+        		ts.replace("$(PAGE)", p3.getText());
+        }
+        else
+        	ts.replace("$(PAGE)", "デフォルト");
+
+
         //文字列保存用バッファの作成
         StringBuilder sb = new StringBuilder();
+        StringBuilder gn = new StringBuilder();
 
         //データの抽出
         try {
-			ResultSet res = mOracle.query("select * from exam01");
+			ResultSet res = mOracle.query("select * from Table_Content");
+			ResultSet genre = mOracle.query("select * from Table_Genre");
 			while(res.next())
 			{
-				String data = res.getString(1);
-				if(data != null)
+				String name = res.getString(2);
+				String write = res.getString(3);
+				//日付
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(res.getDate(4));
+				if(name != null && write != null)
 				{
 					//文字列バッファにメッセージ内容を貯める
 					//CONVERTはタグの無効化
-					sb.append(String.format("<hr>%s<BR>\n", CONVERT(data)));
+					sb.append(String.format(
+							"<hr>%s%d年%d月%d日 %d時%d分%d秒<br>%s<BR>\n",
+							CONVERT(name),
+							cal.get(Calendar.YEAR),
+							cal.get(Calendar.MONTH)+1,
+							cal.get(Calendar.DAY_OF_MONTH),
+							cal.get(Calendar.HOUR_OF_DAY),
+							cal.get(Calendar.MINUTE),
+							cal.get(Calendar.SECOND),CONVERT(write)));
 				}
 			}
 			//メッセージの置換

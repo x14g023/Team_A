@@ -39,6 +39,7 @@ header{
 	top:122px; left:200px
 }
 
-form{
+.massage{
+	position:relative; top:225px; left:50px;
 
 }
