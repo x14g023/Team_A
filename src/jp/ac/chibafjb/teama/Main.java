@@ -24,6 +24,7 @@ public class Main extends HttpServlet {
 	private static final String TITLE = "たいとるかわる";
 	private static final long serialVersionUID = 1L;
     private Oracle mOracle;
+    public static String password = "password";
 
     //タグの無効化
     public static String CONVERT(String str)
@@ -64,11 +65,12 @@ public class Main extends HttpServlet {
 			if(!mOracle.isTable("Table_Content")&&mOracle.isTable("Table_Genre")){
 
 				mOracle.execute("create table Table_Content("
+						+ "ID Number,"
 						+ "name varchar2(100),"
 						+ "write varchar2(1000),"
 						+ "time date,"
 						+ "genreID Number);"
-						+ "create table Table_Genre(Genre_name varchar2(100));"
+						+ "create table Table_Genre(GenreID Number,Genre_name varchar2(100));"
 						+ "create sequence Table_Content_SeqID;"
 						+ "create sequence Table_Genre_SeqID;"
 						);
@@ -116,7 +118,7 @@ public class Main extends HttpServlet {
         //パラメータにデータがあった場合はDBへ挿入
         String param1 = request.getParameter("name");
         String param2 = request.getParameter("write");
-        if (param1 != null && param1.length() > 0 || param2 != null && param2.length() > 0 )
+        if (param1 != null && param1.length() > 0 && param2 != null && param2.length() > 0 )
         {
         	//UTF8をJava文字列に変換
         	String dataw = new String(param1.getBytes("ISO-8859-1"),"UTF-8");
@@ -165,8 +167,22 @@ public class Main extends HttpServlet {
 							cal.get(Calendar.SECOND),CONVERT(write)));
 				}
 			}
+			//ジャンルの抽出
+			while(genre.next())
+			{
+				String gname = genre.getString(2);
+				if(gname != null)
+				{
+					//文字列バッファにメッセージ内容を貯める
+					//CONVERTはタグの無効化
+					gn.append(String.format("<li>%s</li>",gname));
+				}
+			}
+
 			//メッセージの置換
 	        ts.replace("$(MSG)", sb.toString());
+	        ts.replace("$(GENRE)", gn.toString());
+
 		} catch (SQLException e) {}
 
         //内容の出力

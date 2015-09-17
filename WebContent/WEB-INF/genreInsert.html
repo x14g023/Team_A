@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>ジャンル追加</title>
 <meta name="author" content="">
 <meta name="description" content="">
 <meta name="keywords" content="">
@@ -11,19 +11,18 @@
 </head>
 <body>
 
-<div class =a>
-ジャンル名記入:<input type = "text"><br>
-</div>
-<p></p>
-<div class = b>
-管理者パスワード記入:<input type = "text">
-</div>
-<p></p>
-<div class = c>
-<input type = "submit" value = "追加">
-</div>
- 
- 
- 
+<form action = "GenreInsert" method="post">
+	<div class =a>
+		<p>　　ジャンル名記入:<input type = "text" name="genre"></p><br>
+	</div>
+
+	<div class = b>
+		<p>管理者パスワード記入:<input type = "text" name="pass"></p>
+		<input type = "submit" value = "追加">
+	</div>
+</form>
+<p>$(SYSMSG)</p>
+
+
 </body>
 </html>
