@@ -121,8 +121,8 @@ public class Main extends HttpServlet {
         if (param1 != null && param1.length() > 0 && param2 != null && param2.length() > 0 )
         {
         	//UTF8をJava文字列に変換
-        	String dataw = new String(param1.getBytes("ISO-8859-1"),"UTF-8");
-        	String datan = new String(param2.getBytes("ISO-8859-1"),"UTF-8");
+        	String datan = new String(param1.getBytes("ISO-8859-1"),"UTF-8");
+        	String dataw = new String(param2.getBytes("ISO-8859-1"),"UTF-8");
         	//SQL文の作成 Oracle.STRはシングルクオートのエスケープ処理
         	String sql = String.format(
         			"insert into Table_Content values(Table_Content_SeqID.nextval,'%s','%s',SYSDATE,1)",Oracle.STR(datan),Oracle.STR(dataw));
@@ -134,8 +134,33 @@ public class Main extends HttpServlet {
         //テンプレートファイルを読む
         TemplateString ts = new TemplateString();
         ts.open(this, "Keijiban.html");
+
         //タイトルの置換
         ts.replace("$(TITLE)", TITLE);
+
+        //各ページの読み込み
+        TemplateString p1 = new TemplateString();
+        p1.open(this, "genreInsert.html");
+        TemplateString p2 = new TemplateString();
+        p2.open(this, "genreDelete.html");
+        TemplateString p3 = new TemplateString();
+        p3.open(this, "commentDelete.html");
+
+        //パラメータによって内容を切り替え
+        param1 = request.getParameter("k");
+        if (param1 != null && param1.length() > 0)
+        {
+        	int index =  Integer.parseInt(param1);
+        	if(index == 1)
+        		ts.replace("$(PAGE)", p1.getText());
+        	else if(index == 2)
+        		ts.replace("$(PAGE)", p2.getText());
+        	else if(index == 3)
+        		ts.replace("$(PAGE)", p3.getText());
+        }
+        else
+        	ts.replace("$(PAGE)", "デフォルト");
+
 
         //文字列保存用バッファの作成
         StringBuilder sb = new StringBuilder();
