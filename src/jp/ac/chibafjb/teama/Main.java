@@ -168,7 +168,7 @@ public class Main extends HttpServlet {
 
         //データの抽出
         try {
-			ResultSet res = mOracle.query("select * from Table_Content");
+			ResultSet res = mOracle.query("select * from Table_Content ORDER BY time desc");
 			ResultSet genre = mOracle.query("select * from Table_Genre");
 			while(res.next())
 			{
@@ -196,11 +196,12 @@ public class Main extends HttpServlet {
 			while(genre.next())
 			{
 				String gname = genre.getString(2);
+				int gid = genre.getInt(1);
 				if(gname != null)
 				{
 					//文字列バッファにメッセージ内容を貯める
 					//CONVERTはタグの無効化
-					gn.append(String.format("<li>%s</li>",gname));
+					gn.append(String.format("<a href=\"?j="+gid+"\">%s</a><br>",gname));
 				}
 			}
 
