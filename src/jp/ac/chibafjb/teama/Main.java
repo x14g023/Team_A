@@ -117,14 +117,13 @@ public class Main extends HttpServlet {
         // 出力ストリームの取得
         PrintWriter out = response.getWriter();
 
-        int gparam;
-		try {
+
 			String param3 = request.getParameter("j");
-			gparam = Integer.parseInt(param3);
-		} catch (NumberFormatException e1) {
-			gparam = 1;
-			e1.printStackTrace();
+		if(param3==null){
+			param3 = "1";
 		}
+
+		int gparam = Integer.parseInt(param3);
 
 
         //パラメータにデータがあった場合はDBへ挿入
@@ -137,7 +136,7 @@ public class Main extends HttpServlet {
         	String dataw = new String(param2.getBytes("ISO-8859-1"),"UTF-8");
         	//SQL文の作成 Oracle.STRはシングルクオートのエスケープ処理
         	String sql = String.format(
-        			"insert into Table_Content values(Table_Content_SeqID.nextval,'%s','%s',SYSDATE,"+gparam+")",Oracle.STR(datan),Oracle.STR(dataw));
+        			"insert into Table_Content values(Table_Content_SeqID.nextval,'%s','%s',SYSDATE,%d)",Oracle.STR(datan),Oracle.STR(dataw),gparam);
         	//デバッグ用
         	System.out.println("DEBUG:SQL文 "+sql);
         	//DBにSQL文を実行させる
@@ -177,7 +176,7 @@ public class Main extends HttpServlet {
         //文字列保存用バッファの作成
         StringBuilder sb = new StringBuilder();
         StringBuilder gn = new StringBuilder();
-        StringBuilder gntitle = new StringBuilder();
+        StringBuilder gdele = new StringBuilder();
 
         //データの抽出
         try {
@@ -222,13 +221,26 @@ public class Main extends HttpServlet {
 				}
 			}
 
-			//サブタイトル
-
+			//ジャンル削除
+			while(genre.next())
+			{
+				String gname = genre.getString(2);
+				int gid = genre.getInt(1);
+				if(gname != null)
+				{
+					//文字列バッファにメッセージ内容を貯める
+					//CONVERTはタグの無効化
+					gdele.append(String.format( "<td>"
+							+ "<input type=\"radio\" name=\"hyouka\" value=\""+gid+"\"></td>"
+							+ "<td>%s</td>",gname));
+				}
+			}
 
 
 			//メッセージの置換
 	        ts.replace("$(MSG)", sb.toString());
 	        ts.replace("$(GENRE)", gn.toString());
+	        ts.replace("$(ID)", param3);
 
 
 		} catch (SQLException e) {}
