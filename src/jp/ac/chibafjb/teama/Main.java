@@ -139,8 +139,8 @@ public class Main extends HttpServlet {
         ts.replace("$(TITLE)", TITLE);
 
         //各ページの読み込み
-        TemplateString p1 = new TemplateString();
-        p1.open(this, "genreInsert.html");
+        TemplateString p4 = new TemplateString();
+        p4.open(this, "genreInsert.html");
         TemplateString p2 = new TemplateString();
         p2.open(this, "genreDelete.html");
         TemplateString p3 = new TemplateString();
@@ -151,8 +151,8 @@ public class Main extends HttpServlet {
         if (param1 != null && param1.length() > 0)
         {
         	int index =  Integer.parseInt(param1);
-        	if(index == 1)
-        		ts.replace("$(PAGE)", p1.getText());
+        	if(index == 4)
+        		ts.replace("$(PAGE)", p4.getText());
         	else if(index == 2)
         		ts.replace("$(PAGE)", p2.getText());
         	else if(index == 3)
